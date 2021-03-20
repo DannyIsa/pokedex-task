@@ -1,24 +1,16 @@
-import axios from "axios";
-import React, { useState } from "react";
 
-export default function TypeList({ type }) {
-  const [typeList, setTypeList] = useState([]);
-  const handleClick = () => {
-    axios.get(`http://localhost:3001/api/type/${type}`).then((res) => {
-      let pokeListType = [];
-      res.data.forEach((pokemon) => {
-        pokeListType.push(pokemon);
-      });
-      setTypeList(pokeListType);
-    });
-  };
-  return (
-    <div>
-      <div>
-        <b onClick={handleClick}>{type}</b>
-      </div>
-      <div>{typeList.join(", ")}</div>
-      <div>{typeList.map((pokemon) => {})}</div>
-    </div>
-  );
+import React, { Component } from 'react';
+import PokeLink from "./PokeLink";
+
+export default class TypeList extends Component{
+    constructor(props) {
+        super(props);
+    }
+
+    render(){
+        if (!this.props.typeList) return null;
+        return this.props.typeList.map((pokemon) => 
+        <li><PokeLink key={pokemon} name={pokemon} displayPokemon={this.props.displayPokemon} /></li>
+        );
+    }
 }

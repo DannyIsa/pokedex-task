@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import axios from "axios";
 import PokeImage from "./PokeImage";
+import TypeLink from "./TypeLink";
 import Catch from "./Catch";
-import TypeList from "./TypeList";
 
 export default class Pokemon extends Component {
   constructor(props) {
@@ -9,10 +10,9 @@ export default class Pokemon extends Component {
   }
 
   render() {
-    if (this.props.pokemon.length === 0) {
+    if (!this.props.data) {
       return null;
     }
-
     return (
       <div
         style={{
@@ -22,24 +22,26 @@ export default class Pokemon extends Component {
           padding: "5px",
         }}
       >
-        <PokeImage data={this.props.pokemon} />
+        <PokeImage data={this.props.data} />
         <p>
-          <Catch pokemon={this.props.pokemon.name} />
+          <b>{this.props.data.name}</b>
         </p>
         <p>
-          <b>{this.props.pokemon.name}</b>
-        </p>
-        <p>
-          <b>Weight:</b> {this.props.pokemon.weight}
-        </p>
-        <p>
-          <b>Height:</b> {this.props.pokemon.height}
-        </p>
-        <p>
-          <b>Type:</b>
-          {this.props.pokemon.type.map((type) => (
-            <TypeList key={type} type={type} />
+          <b>type:</b>
+          {this.props.data.types.map((type) => (
+            <span>
+              <TypeLink type={type} clickedType={this.props.clickedType} />{" "}
+            </span>
           ))}
+        </p>
+        <p>
+          <b>weight:</b> {this.props.data.weight}
+        </p>
+        <p>
+          <b>height:</b> {this.props.data.height}
+        </p>
+        <p>
+          <Catch pokemon={this.props.data.name} />
         </p>
       </div>
     );

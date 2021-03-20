@@ -5,7 +5,7 @@ import axios from "axios";
 export default class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "", data: [], notFound: "" };
+    this.state = { value: "", data: [] };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,23 +17,18 @@ export default class Search extends React.Component {
 
   handleSubmit(event) {
     axios
-      .get(`http://localhost:3001/api/pokemon/${this.state.value}`)
-      .then((res) => {
-        this.setState({
-          data: res.data,
-          notFound: "",
-        });
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    .get(`http://localhost:3001/api/pokemon/${this.state.value}`)
+    .then((res) => {
+      this.props.displayPokemon(res.data);
+      this.props.isFound(true);
+    }).catch(error => this.props.isFound(false));
     event.preventDefault();
+
   }
 
   render() {
     return (
       <div>
-        <div>{this.state.notFound}</div>
         <form onSubmit={this.handleSubmit}>
           <label>
             Name:
@@ -45,7 +40,6 @@ export default class Search extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <Pokemon pokemon={this.state.data} />
       </div>
     );
   }

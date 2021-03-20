@@ -1,26 +1,31 @@
 const { Router } = require("express");
-const { default: axios } = require("axios");
 const pokemon = Router();
+const { default: axios } = require("axios");
+const fs = require("fs");
+const { rejects } = require("assert");
 
-pokemon.get("/:name", (request, result) => {
-  let { name } = request.params;
+pokemon.get("/:name", (req, res) => {
+  let { name } = req.params;
+  axios
+    .get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+    .then((response) => {
+      console.log("status", response.status);
+      let types = [];
 
-  axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`).then((response) => {
-    console.log(response.data.types);
-    const types = [];
-    response.data.types.forEach((type) => {
-      types.push(type.type.name);
-    });
-    let data = {
-      name: response.data.forms[0].name,
-      height: response.data.height,
-      weight: response.data.weight,
-      type: types,
-      front_url: response.data.sprites.front_default,
-      back_url: response.data.sprites.back_default,
-    };
-    result.send(data).status(200);
-  });
+      for (let slot of response.data.types) types.push(slot.type.name);
+
+      let data = {
+        name: name,
+        types: types,
+        weight: response.data.weight,
+        height: response.data.height,
+        front_url: response.data.sprites.front_default,
+        back_url: response.data.sprites.back_default,
+      };
+
+      return res.send(data).status(200);
+    })
+    .catch((error) => res.sendStatus(404));
 });
 
 module.exports = pokemon;
