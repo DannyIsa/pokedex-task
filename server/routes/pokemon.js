@@ -6,11 +6,16 @@ pokemon.get("/:name", (request, result) => {
   let { name } = request.params;
 
   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`).then((response) => {
+    console.log(response.data.types);
+    const types = [];
+    response.data.types.forEach((type) => {
+      types.push(type.type.name);
+    });
     let data = {
       name: response.data.forms[0].name,
       height: response.data.height,
       weight: response.data.weight,
-      type: response.data.types[0].type.name,
+      type: types,
       front_url: response.data.sprites.front_default,
       back_url: response.data.sprites.back_default,
     };

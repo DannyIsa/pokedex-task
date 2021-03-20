@@ -15,7 +15,7 @@ export default function TypeList({ type }) {
   return (
     <div>
       <div>
-        <b onClick={handleClick}>Type: {type}</b>
+        <b onClick={handleClick}>Type: {type.join(", ")}</b>
       </div>
       <div>{typeList.join(", ")}</div>
     </div>
