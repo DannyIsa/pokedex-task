@@ -15,9 +15,10 @@ export default function TypeList({ type }) {
   return (
     <div>
       <div>
-        <b onClick={handleClick}>Type: {type.join(", ")}</b>
+        <b onClick={handleClick}>{type}</b>
       </div>
       <div>{typeList.join(", ")}</div>
+      <div>{typeList.map((pokemon) => {})}</div>
     </div>
   );
 }

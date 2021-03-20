@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PokeImage from "./PokeImage";
+import Catch from "./Catch";
 import TypeList from "./TypeList";
 
 export default class Pokemon extends Component {
@@ -11,6 +12,7 @@ export default class Pokemon extends Component {
     if (this.props.pokemon.length === 0) {
       return null;
     }
+
     return (
       <div
         style={{
@@ -22,16 +24,22 @@ export default class Pokemon extends Component {
       >
         <PokeImage data={this.props.pokemon} />
         <p>
+          <Catch pokemon={this.props.pokemon.name} />
+        </p>
+        <p>
           <b>{this.props.pokemon.name}</b>
         </p>
         <p>
-          <b>weight:</b> {this.props.pokemon.weight}
+          <b>Weight:</b> {this.props.pokemon.weight}
         </p>
         <p>
-          <b>height:</b> {this.props.pokemon.height}
+          <b>Height:</b> {this.props.pokemon.height}
         </p>
         <p>
-          <TypeList type={this.props.pokemon.type} />
+          <b>Type:</b>
+          {this.props.pokemon.type.map((type) => (
+            <TypeList key={type} type={type} />
+          ))}
         </p>
       </div>
     );
